@@ -49,7 +49,7 @@ def botGotPostAddAction(
     text = f'''{at} {stripped}
 
 -------------
-You can to do @all by @![:Person]({bot.id}).
+You can do @all by @![:Person]({bot.id}).
 -------------
 '''
     bot.sendMessage(
