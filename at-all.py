@@ -15,6 +15,9 @@ def reducer(x, y):
   st = f'![:Person]({y}) '
   return f'{x}{st}'
 
+def hello():
+  return 'Hello, I am a @all bot. Please post any message with "@all" if you want to @all.'
+
 def botJoinPrivateChatAction(bot, groupId, user, dbAction):
   """
   This is invoked when the bot is added to a chat group.
@@ -22,7 +25,7 @@ def botJoinPrivateChatAction(bot, groupId, user, dbAction):
   bot.sendMessage(
     groupId,
     {
-      'text': f'Hello, I am a @all bot. Please post any message with "@all" if you want to @all.'
+      'text': hello()
     }
   )
 
@@ -41,7 +44,7 @@ def botGotPostAddAction(
   if handledByExtension:
     return
 
-  if f'@all' in text:
+  if '@all' in text:
     r = bot.rc.get(f'/restapi/v1.0/glip/groups/{groupId}')
     txt = json.loads(r.text)
     at = reduce(reducer, txt['members'], '')
@@ -58,4 +61,10 @@ You can do @all by post message with "@all".
         'text': text
       }
     )
-
+  elif f'![:Person]({bot.id})':
+    bot.sendMessage(
+      groupId,
+      {
+        'text': hello()
+      }
+    )
