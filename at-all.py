@@ -61,7 +61,7 @@ You can do @all by post message with "@all".
         'text': text
       }
     )
-  elif f'![:Person]({bot.id})':
+  elif f'![:Person]({bot.id})' in text:
     bot.sendMessage(
       groupId,
       {
