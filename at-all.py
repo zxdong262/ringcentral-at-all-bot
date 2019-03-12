@@ -22,7 +22,7 @@ def botJoinPrivateChatAction(bot, groupId, user, dbAction):
   bot.sendMessage(
     groupId,
     {
-      'text': f'Hello, I am a @all bot. Please post any message with "![:Person]({bot.id})" if you want to @all.'
+      'text': f'Hello, I am a @all bot. Please post any message with "@all" if you want to @all.'
     }
   )
 
@@ -41,15 +41,15 @@ def botGotPostAddAction(
   if handledByExtension:
     return
 
-  if f'![:Person]({bot.id})' in text:
+  if f'@all' in text:
     r = bot.rc.get(f'/restapi/v1.0/glip/groups/{groupId}')
     txt = json.loads(r.text)
     at = reduce(reducer, txt['members'], '')
-    stripped = text.replace(f'![:Person]({bot.id})', '')
+    stripped = text.replace(f'@all', '')
     text = f'''{at} {stripped}
 
 -------------
-You can do @all by @![:Person]({bot.id}).
+You can do @all by post message with "@all".
 -------------
 '''
     bot.sendMessage(

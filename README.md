@@ -1,6 +1,8 @@
 
 # ringcentral-at-all-bot
 
+![ ](screenshots/at-all-bot-min.png)
+
 Add @all function to glip chatgroup with this bot. This is [@linjunpop](https://github.com/linjunpop)'s idea, posted at [Good ideas for new bots](https://github.com/ringcentral/ringcentral-chatbot-js/issues/8)
 
 ![ ](screenshots/ss.png)
