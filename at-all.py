@@ -51,7 +51,7 @@ def botGotPostAddAction(
     stripped = text.replace(f'@all', '')
     text = f'''{stripped}
 
-    {at}
+{at}
 
 -------------
 You can do @all by post message with "@all".
