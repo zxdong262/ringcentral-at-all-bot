@@ -48,7 +48,7 @@ def botGotPostAddAction(
     r = bot.rc.get(f'/restapi/v1.0/glip/groups/{groupId}')
     txt = json.loads(r.text)
     at = reduce(reducer, txt['members'], '')
-    stripped = text.replaceAll(f'@all', '')
+    stripped = text.replace(f'@all', '')
     text = f'''{stripped}
 
     {at}
