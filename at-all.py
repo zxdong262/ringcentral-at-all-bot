@@ -48,8 +48,10 @@ def botGotPostAddAction(
     r = bot.rc.get(f'/restapi/v1.0/glip/groups/{groupId}')
     txt = json.loads(r.text)
     at = reduce(reducer, txt['members'], '')
-    stripped = text.replace(f'@all', '')
-    text = f'''{at} {stripped}
+    stripped = text.replaceAll(f'@all', '')
+    text = f'''{stripped}
+
+    {at}
 
 -------------
 You can do @all by post message with "@all".
