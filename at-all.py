@@ -21,6 +21,16 @@ def fetchGroupInfo(bot, groupId):
   txt = bot.rc.get(f'/restapi/v1.0/glip/groups/{groupId}')
   return json.loads(txt.text)
 
+def arraySplit(arr, n):
+  len0 = math.ceil(len(arr) / n)
+  res = []
+  for x in range(len0):
+    start = 0 + x * n
+    end = 0 + (x + 1) * n
+    arr0 = arr[start:end]
+    res.append(arr0)
+  return res
+
 def removeBots(bot, members):
   ids = members
   size = 30
@@ -39,7 +49,7 @@ def removeBots(bot, members):
       if 'email' in user and not 'bot.glip.net' in user['email']:
         filtered.append(user['id'])
 
-  return filtered
+  return arraySplit(filtered, 90)
 
 def hello():
   return 'Hello, I am a @all bot. Please post any message with "@all" if you want to @all.'
@@ -73,22 +83,28 @@ def botGotPostAddAction(
   if '@all' in text:
     txt = fetchGroupInfo(bot, groupId)
     ids = removeBots(bot, txt['members'])
-    at = reduce(reducer, ids, '')
-    stripped = text.replace(f'@all', '')
-    text = f'''{stripped}
-
-{at}
-
+    len0 = len(ids)
+    rest = '''
 -------------
 You can do @all by post message with "@all".
 -------------
 '''
-    bot.sendMessage(
-      groupId,
-      {
-        'text': text
-      }
-    )
+    stripped = text.replace(f'@all', '')
+    for x in range(len0):
+      ids0 = ids[x]
+      at = reduce(reducer, ids0, '')
+      text = f'''{stripped}
+
+{at}
+'''
+      if x == len0 - 1:
+        text = f'{text}{rest}'
+      bot.sendMessage(
+        groupId,
+        {
+          'text': text
+        }
+      )
   elif f'![:Person]({bot.id})' in text:
     bot.sendMessage(
       groupId,
