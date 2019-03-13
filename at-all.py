@@ -18,11 +18,11 @@ def reducer(x, y):
   return f'{x}{st}'
 
 def fetchGroupInfo(bot, groupId):
-  txt = bot.rc.get(f'/restapi/v1.0/glip/chats/{groupId}')
+  txt = bot.rc.get(f'/restapi/v1.0/glip/groups/{groupId}')
   return json.loads(txt.text)
 
 def removeBots(bot, members):
-  ids = list(map(lambda x: x['id'], members))
+  ids = members
   size = 30
   len0 = math.ceil(len(ids) / size)
   filtered = []
