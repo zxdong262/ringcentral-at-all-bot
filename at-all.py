@@ -8,12 +8,38 @@ __package__ = 'ringcentral_bot_framework'
 
 import copy
 import json
+import math
 from functools import reduce
+from requests_toolbelt.multipart import decoder
 
 def reducer(x, y):
   '''@user reducer'''
   st = f'![:Person]({y}) '
   return f'{x}{st}'
+
+def fetchGroupInfo(bot, groupId):
+  txt = bot.rc.get(f'/restapi/v1.0/glip/chats/{groupId}')
+  return json.loads(txt.text)
+
+def removeBots(bot, members):
+  ids = list(map(lambda x: x['id'], members))
+  size = 30
+  len0 = math.ceil(len(ids) / size)
+  filtered = []
+  for x in range(len0):
+    start = 0 + x * size
+    end = 0 + (x + 1) * size
+    arr = ids[start:end]
+    idsStr = ','.join(arr)
+    res = bot.rc.get(f'/restapi/v1.0/glip/persons/{idsStr}')
+    multipart_data = decoder.MultipartDecoder.from_response(res)
+
+    for part in multipart_data.parts:
+      user = json.loads(part.text)
+      if 'email' in user and not 'bot.glip.net' in user['email']:
+        filtered.append(user['id'])
+
+  return filtered
 
 def hello():
   return 'Hello, I am a @all bot. Please post any message with "@all" if you want to @all.'
@@ -45,9 +71,9 @@ def botGotPostAddAction(
     return
 
   if '@all' in text:
-    r = bot.rc.get(f'/restapi/v1.0/glip/groups/{groupId}')
-    txt = json.loads(r.text)
-    at = reduce(reducer, txt['members'], '')
+    txt = fetchGroupInfo(bot, groupId)
+    ids = removeBots(bot, txt['members'])
+    at = reduce(reducer, ids, '')
     stripped = text.replace(f'@all', '')
     text = f'''{stripped}
 
