@@ -31,7 +31,7 @@ def arraySplit(arr, n):
     res.append(arr0)
   return res
 
-def removeBots(bot, members):
+def removeBots(bot, members, creatorId):
   ids = members
   size = 30
   len0 = math.ceil(len(ids) / size)
@@ -52,7 +52,7 @@ def removeBots(bot, members):
   return arraySplit(filtered, 90)
 
 def hello():
-  return 'Hello, I am a @all bot. Please post any message with "@all" if you want to @all.'
+  return 'Hello, I am @all bot. Please post any message with "@all" if you want to @all.'
 
 def botJoinPrivateChatAction(bot, groupId, user, dbAction):
   """
@@ -82,7 +82,7 @@ def botGotPostAddAction(
 
   if '@all' in text:
     txt = fetchGroupInfo(bot, groupId)
-    ids = removeBots(bot, txt['members'])
+    ids = removeBots(bot, txt['members'], creatorId)
     len0 = len(ids)
     rest = '''
 -------------
@@ -91,9 +91,10 @@ You can do @all by post message with "@all".
 '''
     stripped = text.replace(f'@all', '')
     for x in range(len0):
-      ids0 = ids[x]
+      ids0 = filter(lambda ss: not ss == creatorId, ids[x])
       at = reduce(reducer, ids0, '')
-      text = f'''{stripped}
+      text = f'''![:Person]({creatorId}):
+{stripped}
 
 {at}
 '''
