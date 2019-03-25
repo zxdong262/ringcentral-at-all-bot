@@ -79,7 +79,8 @@ def botGotPostAddAction(
   """
   if handledByExtension:
     return
-
+  if text is None:
+    text = ''
   if '@all' in text:
     txt = fetchGroupInfo(bot, groupId)
     ids = removeBots(bot, txt['members'], creatorId)
@@ -87,15 +88,13 @@ def botGotPostAddAction(
     rest = '''
 -------------
 You can do @all by post message with "@all".
--------------
 '''
-    stripped = text.replace(f'@all', '')
+    stripped = text.replace(f'@all', '').strip()
     for x in range(len0):
       ids0 = filter(lambda ss: not ss == creatorId, ids[x])
-      at = reduce(reducer, ids0, '')
-      text = f'''![:Person]({creatorId}):
+      at = reduce(reducer, ids0, '').strip()
+      text = f'''![:Person]({creatorId}) says:
 {stripped}
-
 {at}
 '''
       if x == len0 - 1:
