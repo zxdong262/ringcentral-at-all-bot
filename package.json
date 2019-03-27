@@ -1,6 +1,6 @@
 {
   "name": "ringcentral-at-all-bot",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Add @all function to glip chatgroup with this bot",
   "keywords": [
     "ringcentral",
