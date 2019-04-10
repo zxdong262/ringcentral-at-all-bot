@@ -1,6 +1,6 @@
 flask
 python-dotenv
 pylint
-ringcentral_bot_framework == 0.3.2
+ringcentral_bot_framework == 0.3.3
 requests-toolbelt
 boto3
