@@ -54,6 +54,13 @@ def removeBots(bot, members, creatorId):
 def hello():
   return 'Hello, I am @all bot. Please post any message with "@all" if you want to @all.'
 
+def hasAtAll(txt):
+  arr = txt.split('\n')
+  for x in arr:
+    if not x.startswith('> ') and '@all' in x:
+      return True
+  return False
+
 def botJoinPrivateChatAction(bot, groupId, user, dbAction):
   """
   This is invoked when the bot is added to a chat group.
@@ -82,7 +89,7 @@ def botGotPostAddAction(
     return
   if text is None:
     text = ''
-  if '@all' in text:
+  if hasAtAll(text):
     txt = fetchGroupInfo(bot, groupId)
     ids = removeBots(bot, txt['members'], creatorId)
     len0 = len(ids)
