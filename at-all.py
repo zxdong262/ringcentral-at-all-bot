@@ -52,12 +52,12 @@ def removeBots(bot, members, creatorId):
   return arraySplit(filtered, 90)
 
 def hello():
-  return 'Hello, I am @all bot. Please post any message with "@all" if you want to @all.'
+  return 'Hello, I am @all bot. Please post any message with "@all" or "#all" if you want to @all.'
 
 def hasAtAll(txt):
   arr = txt.split('\n')
   for x in arr:
-    if not x.startswith('> ') and '@all' in x:
+    if not x.startswith('> ') and ('@all' in x or '#all' in x):
       return True
   return False
 
@@ -95,9 +95,9 @@ def botGotPostAddAction(
     len0 = len(ids)
     rest = '''
 -------------
-You can do @all by post message with "@all".
+You can do @all by post message with "@all" or "#all".
 '''
-    stripped = text.replace(f'@all', '').strip()
+    stripped = text.replace(f'@all', '').replace(f'#all', '').strip()
     for x in range(len0):
       ids0 = filter(lambda ss: not ss == creatorId, ids[x])
       at = reduce(reducer, ids0, '').strip()
