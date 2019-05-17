@@ -54,7 +54,10 @@ def removeBots(bot, members, creatorId):
 def hello():
   return 'Hello, I am @all bot. Please post any message with "@all" or "#all" if you want to @all.'
 
-def hasAtAll(txt):
+def hasAtAll(txt, ref):
+  reped = txt.replace(ref, '').strip()
+  if len(reped) > 0 and ref in txt:
+    return True
   arr = txt.split('\n')
   for x in arr:
     if not x.startswith('> ') and ('@all' in x or '#all' in x):
@@ -89,7 +92,8 @@ def botGotPostAddAction(
     return
   if text is None:
     text = ''
-  if hasAtAll(text):
+  ref = f'![:Person]({bot.id})'
+  if hasAtAll(text, ref):
     txt = fetchGroupInfo(bot, groupId)
     ids = removeBots(bot, txt['members'], creatorId)
     len0 = len(ids)
@@ -97,7 +101,7 @@ def botGotPostAddAction(
 -------------
 You can do @all by post message with "@all" or "#all".
 '''
-    stripped = text.replace(f'@all', '').replace(f'#all', '').strip()
+    stripped = text.replace(f'@all', '').replace(f'#all', '').replace(ref, '').strip()
     for x in range(len0):
       ids0 = filter(lambda ss: not ss == creatorId, ids[x])
       at = reduce(reducer, ids0, '').strip()
